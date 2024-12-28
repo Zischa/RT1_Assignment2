@@ -71,7 +71,8 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate actions in the 'action' folder
 add_action_files(
    DIRECTORY
-   action
+   ${catkin_PACKAGE_SHARE_DESTINATION}/../assignment_2_2024/action
+
    FILES
    Planning.action
  )
