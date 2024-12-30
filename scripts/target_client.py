@@ -61,16 +61,16 @@ class GoalHandler:
 				self.remove_target = False
 			if choice == 'c' :
 				rospy.loginfo("Cancelling target...")
-				if (not self.remove_target)
+				if (not self.remove_target):
 					self.client.cancel_goal()
 					self.remove_target = True
 					rospy.loginfo ("Target has been removed correctly")
-				else
+				else:
 					rospy.loginfo ("There's no target to remove.\nInsert a target...\n")
 				
 				
 				
-			else
+			else:
 				rospy.logwarn("Invalid input, please try again...\n")
 				
 			

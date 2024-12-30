@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<launch>
+	<!--Include the launch file prome the assingment_2_2024 package -->
+    <include file="$(find assignment_2_2024)/launch/assignment1.launch" />
+    	<!--Launch target_client node from the assingment_2_2024_client package -->
+    <node pkg="assignment_2_2024_client" type="target_client.py" name="target_client" output = "screen"/>
+    	<!--Launch target_service node from the assingment_2_2024_client package -->
+    <node pkg="assignment_2_2024_client" type="target_srv.py" name="target_service" output = "screen" />
+</launch>
