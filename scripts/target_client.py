@@ -73,7 +73,6 @@ class GoalHandler:
 		self.client.send_goal(target_goal)
 		self.remove_target = False
 		rospy.loginfo("New target set: x = %f, y = %f", new_target_pos_x, new_target_pos_y)
-		rospy.logwarn("Invalid input. Please enter a numeric values."
 		
 	#Method for cancelling target goal
 	def cancel_target(self):
