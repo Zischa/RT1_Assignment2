@@ -56,6 +56,3 @@ This command will open three separate terminals:
 
 ---
 
-This structure provides clear instructions for setting up and running the package, along with details of the functionality and expected terminal outputs.
-
-Make sure to replace `<repository_link>` with the actual URL of the repository if needed. Let me know if you need any further modifications!
