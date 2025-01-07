@@ -54,5 +54,11 @@ This command will open three separate terminals:
 2. The second terminal will allow you to input the target coordinates for the robot.
 3. The third terminal will show the status of the service node, indicating that it is running.
 
+If you want to see the last target coordinates, you need to run the command onother terminal:
+
+```bash
+rosservice call /target_srv
+```
+
 ---
 
