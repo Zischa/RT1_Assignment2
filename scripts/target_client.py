@@ -1,5 +1,33 @@
 #!/usr/bin/env python
 
+"""
+.. module:: Target_client
+   :platform: Unix
+   :synopsis: Python module for target client functionality.
+
+.. moduleauthor:: Francesca Amato <s7827998@studenti.unige.it>
+
+This module defines a ROS client for setting and managing goal targets
+using `SimpleActionClient`. It also handles publishing positional
+and velocity data using a custom message type.
+
+Publisher:
+    - **/pos_and_vel** (:class:`assignment_2_2024_client.msg.Pos_and_vel`)
+      Publishes the current position and velocity of the robot.
+
+Subscriber:
+    - **/odom** (:class:`nav_msgs.msg.Odometry`)
+      Subscribes to odometry data for position and velocity tracking.
+
+Action Client:
+    - **/reaching_goal** (:class:`assignment_2_2024.msg.PlanningAction`)
+      Sends goals to the action server to manage target positions.
+
+Services:
+    None.
+"""
+
+
 import rospy
 import actionlib
 import actionlib.msg
@@ -12,7 +40,24 @@ from assignment_2_2024_client.msg import Pos_and_vel #custom .msg file inside ms
 from actionlib_msgs.msg import GoalStatus
 
 class GoalHandler:
+	"""
+	A class to handle goal-setting, goal cancellation, and publishing robot position and velocity in a ROS-based system.
+
+	:ivar remove_target: A flag to indicate whether the current target should be removed.
+	:vartype remove_target: bool
+	:ivar client: The SimpleActionClient for interacting with the goal action server.
+	:vartype client: :class:`actionlib.SimpleActionClient`
+	:ivar check_odometry: Subscriber for odometry updates.
+	:vartype check_odometry: :class:`rospy.Subscriber`
+	:ivar pub: Publisher for position and velocity messages.
+	:vartype pub: :class:`rospy.Publisher`
+	"""
 	def __init__(self):
+		""" 
+		Initializes the GoalHandler node and sets up the clients, subscriber, and publisher.
+		
+		:raises ROSInterruptException: If ROS initialization fails.
+		"""
 		rospy.init_node('target_client')
 		#No target
 		self.remove_target = True
@@ -29,7 +74,13 @@ class GoalHandler:
 		
 	#Function that sets new target and delete the previous one	
 	def set_goal(self):
-		
+		"""
+		Prompts the user to set a new target or cancel the current target.
+
+		This function interacts with the ROS parameter server to fetch and modify target positions. It allows users to provide input dynamically.
+
+		:return: None
+		"""
 		while not rospy.is_shutdown():
 			#get current pose of the target
 			target_pos_x = rospy.get_param('/des_pos_x')
@@ -51,6 +102,17 @@ class GoalHandler:
 	
 	#Change target method			
 	def change_target(self, target_goal):
+		"""
+		Changes the target goal by requesting new target positions from the user.
+
+		:param target_goal: The current goal object to be updated.
+		:type target_goal: :class:`assignment_2_2024.msg.PlanningGoal`
+		
+				    
+		Return:
+		    None
+
+		"""
 		#input new target position
 		valid_input=False
 		while not valid_input:
@@ -76,6 +138,16 @@ class GoalHandler:
 		
 	#Method for cancelling target goal
 	def cancel_target(self):
+		"""
+		Cancel the current goal if one is set.
+		
+		Args:
+		    None
+		    
+		Return:
+		    None
+
+		"""
 		rospy.loginfo("Cancelling target...")
 		if (not self.remove_target):
 			self.client.cancel_goal()
@@ -86,6 +158,15 @@ class GoalHandler:
 				
 						
 	def pub_vel_pos (self,data):
+		"""
+		Publishes the robot's current position and velocity to a custom topic.
+		
+		:param data: Odometry data used to extract position and velocity.
+		:type data: :class:`nav_msgs.msg.Odometry`
+		
+		:return: None
+		
+		"""
 		msg = Pos_and_vel()
 		msg.pos_x=data.pose.pose.position.x
 		msg.pos_y=data.pose.pose.position.y
@@ -95,6 +176,9 @@ class GoalHandler:
 		self.pub.publish(msg)
 
 def main():
+	"""
+	Entry point for the script. Initializes the GoalHandler instance and calls the set_goal method.
+	"""
 	handler = GoalHandler()
 	handler.set_goal()
 	
